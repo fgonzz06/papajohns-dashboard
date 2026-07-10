@@ -4,8 +4,8 @@ import { updateOrderStatus } from "../api/tasks";
 // Mapa: cuál es el siguiente estado después de cada estación
 const NEXT_STATUS = {
   COCINA:   "COCINA",
-  EMPAQUE:  "DESPACHO",
-  DESPACHO: "ENTREGADO",
+  EMPAQUE:  "EMPAQUE",
+  DESPACHO: "DESPACHO",
 };
 
 function formatCurrency(amount) {
@@ -30,6 +30,7 @@ export default function TaskCard({ task, station, workerName, onCompleted }) {
   const items = task.items || [];
   const totalAmount = task.totalAmount || task.total_amount;
   const taskToken = task.taskToken || task.task_token;
+  const receiptHandle = task.receiptHandle;
   const startedAt = task.stages?.[station]?.startedAt || task.startedAt;
 
   async function handleComplete() {
