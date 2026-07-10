@@ -3,7 +3,7 @@ import { updateOrderStatus } from "../api/tasks";
 
 // Mapa: cuál es el siguiente estado después de cada estación
 const NEXT_STATUS = {
-  COCINA:   "EMPAQUE",
+  COCINA:   "COCINA",
   EMPAQUE:  "DESPACHO",
   DESPACHO: "ENTREGADO",
 };
@@ -52,6 +52,7 @@ export default function TaskCard({ task, station, workerName, onCompleted }) {
       newStatus: NEXT_STATUS[station],
       responsable: workerName.trim(),
       taskToken,
+      receiptHandle,
     });
     onCompleted(orderId);
   } catch (err) {

@@ -31,10 +31,10 @@ export async function getTasks(stage) {
  * @param {string} responsable - Nombre del trabajador
  * @param {string} taskToken  - Token de Step Functions (del mensaje SQS)
  */
-export async function updateOrderStatus({ orderId, newStatus, responsable, taskToken }) {
+export async function updateOrderStatus({ orderId, newStatus, responsable, taskToken, receiptHandle }) {
   const { data } = await tasksClient.patch(
     `/tenants/${TENANT_ID}/orders/${orderId}/status`,
-    { status: newStatus, responsable, taskToken }
+    { status: newStatus, responsable, taskToken, receiptHandle }
   );
   return data;
 }
