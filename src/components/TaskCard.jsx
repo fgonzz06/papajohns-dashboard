@@ -33,26 +33,34 @@ export default function TaskCard({ task, station, workerName, onCompleted }) {
   const startedAt = task.stages?.[station]?.startedAt || task.startedAt;
 
   async function handleComplete() {
-    if (!workerName.trim()) {
-      setError("Ingresa tu nombre primero.");
-      return;
-    }
-    setIsLoading(true);
-    setError("");
-    try {
-      await updateOrderStatus({
-        orderId,
-        newStatus: NEXT_STATUS[station],
-        responsable: workerName.trim(),
-        taskToken,
-      });
-      onCompleted(orderId);
-    } catch (err) {
-      setError("No se pudo actualizar el pedido. Intenta de nuevo.");
-    } finally {
-      setIsLoading(false);
-    }
+  if (!workerName.trim()) {
+    setError("Ingresa tu nombre primero.");
+    return;
   }
+  setIsLoading(true);
+  setError("");
+  console.log("Task completa:", task);
+  console.log("Mandando PATCH:", {
+    orderId,
+    newStatus: NEXT_STATUS[station],
+    responsable: workerName.trim(),
+    taskToken,
+  });
+  try {
+    await updateOrderStatus({
+      orderId,
+      newStatus: NEXT_STATUS[station],
+      responsable: workerName.trim(),
+      taskToken,
+    });
+    onCompleted(orderId);
+  } catch (err) {
+    console.error("Error PATCH:", err?.response?.data);
+    setError("No se pudo actualizar el pedido. Intenta de nuevo.");
+  } finally {
+    setIsLoading(false);
+  }
+}
 
   return (
     <article className="bg-crust-800/60 border border-crust-700 rounded-2xl p-5 flex flex-col gap-4">
